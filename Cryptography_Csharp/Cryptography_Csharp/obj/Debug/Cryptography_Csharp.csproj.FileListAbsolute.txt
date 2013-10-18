@@ -1,0 +1,8 @@
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\bin\Debug\Cryptography_Csharp.exe.config
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\bin\Debug\Cryptography_Csharp.exe
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\bin\Debug\Cryptography_Csharp.pdb
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.csprojResolveAssemblyReference.cache
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.Properties.Resources.resources
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.csproj.GenerateResource.Cache
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.exe
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.pdb
