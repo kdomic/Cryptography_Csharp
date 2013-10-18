@@ -34,6 +34,7 @@
             this.btnOriginalSpremi = new System.Windows.Forms.Button();
             this.gbCrypro = new System.Windows.Forms.GroupBox();
             this.tbCrypto = new System.Windows.Forms.TextBox();
+            this.btnCryptoUcitaj = new System.Windows.Forms.Button();
             this.btnCryptoSpremi = new System.Windows.Forms.Button();
             this.tbTajni = new System.Windows.Forms.TextBox();
             this.lblTajni = new System.Windows.Forms.Label();
@@ -59,7 +60,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.sbLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.btnCryptoUcitaj = new System.Windows.Forms.Button();
             this.gbOriginal.SuspendLayout();
             this.gbCrypro.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -125,6 +125,16 @@
             this.tbCrypto.Size = new System.Drawing.Size(468, 540);
             this.tbCrypto.TabIndex = 2;
             // 
+            // btnCryptoUcitaj
+            // 
+            this.btnCryptoUcitaj.Location = new System.Drawing.Point(6, 562);
+            this.btnCryptoUcitaj.Name = "btnCryptoUcitaj";
+            this.btnCryptoUcitaj.Size = new System.Drawing.Size(150, 23);
+            this.btnCryptoUcitaj.TabIndex = 1;
+            this.btnCryptoUcitaj.Text = "Učitaj [ crypto.txt ]";
+            this.btnCryptoUcitaj.UseVisualStyleBackColor = true;
+            this.btnCryptoUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
+            // 
             // btnCryptoSpremi
             // 
             this.btnCryptoSpremi.Location = new System.Drawing.Point(399, 562);
@@ -141,6 +151,7 @@
             this.tbTajni.Name = "tbTajni";
             this.tbTajni.Size = new System.Drawing.Size(419, 20);
             this.tbTajni.TabIndex = 2;
+            this.tbTajni.DoubleClick += new System.EventHandler(this.generatePassword_DoubleClick);
             // 
             // lblTajni
             // 
@@ -177,6 +188,7 @@
             this.tbJavni.Name = "tbJavni";
             this.tbJavni.Size = new System.Drawing.Size(419, 20);
             this.tbJavni.TabIndex = 2;
+            this.tbJavni.DoubleClick += new System.EventHandler(this.generatePassword_DoubleClick);
             // 
             // lblJavni
             // 
@@ -213,6 +225,7 @@
             this.tbPrivatni.Name = "tbPrivatni";
             this.tbPrivatni.Size = new System.Drawing.Size(419, 20);
             this.tbPrivatni.TabIndex = 2;
+            this.tbPrivatni.DoubleClick += new System.EventHandler(this.generatePassword_DoubleClick);
             // 
             // lblPrivatni
             // 
@@ -350,16 +363,6 @@
             // 
             this.sbProgress.Name = "sbProgress";
             this.sbProgress.Size = new System.Drawing.Size(100, 16);
-            // 
-            // btnCryptoUcitaj
-            // 
-            this.btnCryptoUcitaj.Location = new System.Drawing.Point(6, 562);
-            this.btnCryptoUcitaj.Name = "btnCryptoUcitaj";
-            this.btnCryptoUcitaj.Size = new System.Drawing.Size(150, 23);
-            this.btnCryptoUcitaj.TabIndex = 1;
-            this.btnCryptoUcitaj.Text = "Učitaj [ crypto.txt ]";
-            this.btnCryptoUcitaj.UseVisualStyleBackColor = true;
-            this.btnCryptoUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
             // 
             // Form1
             // 

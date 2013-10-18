@@ -21,6 +21,23 @@ namespace Cryptography_Csharp
             statusBar("Dobrodošli");
         }
 
+        private void generatePassword_DoubleClick(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb == tbTajni)
+            {
+                tbTajni.Text = generatePassword(16);
+            }
+            else if (tb == tbJavni)
+            {
+                tbJavni.Text = generatePassword(128);
+            }
+            else if (tb == tbPrivatni)
+            {
+                tbPrivatni.Text = generatePassword(128);
+            }
+        }
+
         private void btnUcitaj_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
@@ -222,6 +239,14 @@ namespace Cryptography_Csharp
             if (stanje < 0) sbProgress.Visible = false;
             else sbProgress.Value = stanje;
             sbLabel.Text = poruka;
+        }
+
+        public string generatePassword(int size) 
+        {
+            Random rand = new Random();
+            string input = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var chars = Enumerable.Range(0, size).Select(x => input[rand.Next(0, input.Length)]);
+            return new string(chars.ToArray());
         }
     }
 }
