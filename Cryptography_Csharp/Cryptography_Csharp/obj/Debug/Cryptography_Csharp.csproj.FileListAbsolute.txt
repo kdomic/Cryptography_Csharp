@@ -6,3 +6,4 @@ C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptog
 C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.csproj.GenerateResource.Cache
 C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.exe
 C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.pdb
+C:\Users\Kruno\Documents\Visual Studio 2012\Projects\Cryptography_Csharp\Cryptography_Csharp\Cryptography_Csharp\obj\Debug\Cryptography_Csharp.Form1.resources
