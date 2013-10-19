@@ -75,7 +75,7 @@ namespace Cryptography_Csharp
             else if (clickedButton == btnPrivatniUcitaj){ file = "privatni_kljuc.txt";  data = tbPrivatni; }
             else if (clickedButton == btnSazetakUcitaj) { file = "sazetak.txt";         data = tbSazetak; }
             else if (clickedButton == btnOriginalUcitaj){ file = "original.txt";        data = tbOriginal; }
-            else if (clickedButton == btnCryptoUcitaj) { file = "crypto.txt";           data = tbCrypto; } 
+            else if (clickedButton == btnCryptoUcitaj)  { file = "crypto.txt";          data = tbCrypto; } 
             data.Text = ucitaj(file);
             if (data.Lines[0] == "")
             {
@@ -140,17 +140,18 @@ namespace Cryptography_Csharp
         }
 
         public void cryptAES()
-        {
+        {            
             string DataToEncrypt = tbOriginal.Text;
-            SoapHexBinary shb = SoapHexBinary.Parse(tbTajni.Text);
-            byte[] Key = shb.Value;
-            byte[] IV  = System.Text.ASCIIEncoding.ASCII.GetBytes("16A7C51F5CA8F123");
-            byte[] encrypted;
+            string EncryptKey    = tbTajni.Text;
             if (DataToEncrypt == null || DataToEncrypt.Length <= 0) { statusBar("Tekst za enkripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
-            if (Key == null || Key.Length <= 0) { statusBar("Ključ neispravan"); MessageBox.Show(sbLabel.Text); return; }
+            if (EncryptKey == null || EncryptKey.Length <= 0)       { statusBar("Ključ za enkripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
             statusBar("Kriptiram originalni tekst...", 10);
             try
             {
+                byte[] encryptedData;
+                SoapHexBinary shb = SoapHexBinary.Parse(EncryptKey);
+                byte[] Key = shb.Value;
+                byte[] IV = System.Text.ASCIIEncoding.ASCII.GetBytes("16A7C51F5CA8F123");
                 using (Aes aesAlg = Aes.Create())
                 {
                     aesAlg.Key = Key;
@@ -164,89 +165,93 @@ namespace Cryptography_Csharp
                             {
                                 swEncrypt.Write(DataToEncrypt);
                             }
-                            encrypted = msEncrypt.ToArray();
+                            encryptedData = msEncrypt.ToArray();
                         }
                     }
                 }
+                tbCrypto.Text = Convert.ToBase64String(encryptedData);
             }
-            catch (Exception e) { statusBar("Enkripcija neuspjela! Provjerite ispravnost ključa i originalni tekst"); MessageBox.Show(sbLabel.Text); return; }
-            tbCrypto.Text = Convert.ToBase64String(encrypted);
+            catch (Exception e) { statusBar("Enkripcija neuspjela! Provjerite ispravnost ključa i originalni tekst"); MessageBox.Show(sbLabel.Text); return; }            
             spremi("crypto.txt", tbCrypto.Text);
             statusBar("Tekst kriptiran i pospremljen", 100);
         }
 
         public void decryptAES()
         {
-            byte[] DataToDecrypt = null;
-            SoapHexBinary shb = SoapHexBinary.Parse(tbTajni.Text);
-            byte[] Key = shb.Value;
-            byte[] IV = System.Text.ASCIIEncoding.ASCII.GetBytes("16A7C51F5CA8F123");
-            try { DataToDecrypt = Convert.FromBase64String(tbCrypto.Text); }
-            catch (System.FormatException) { statusBar("Tekst za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
+            string DataToDecrypt = tbCrypto.Text;
+            string DecryptKey    = tbTajni.Text;
             if (DataToDecrypt == null || DataToDecrypt.Length <= 0) { statusBar("Tekst za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
-            if (Key == null || Key.Length <= 0) { statusBar("Ključ neispravan"); MessageBox.Show(sbLabel.Text); return; }
-            statusBar("Dekriptiram kriptirani tekst...", 10);
-            string plaintext = null;
+            if (DecryptKey == null || DecryptKey.Length <= 0) { statusBar("Ključ za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
+            statusBar("Dekriptiram kriptirani tekst...", 10);      
             try {
+                string decryptedData;
+                byte[] ByteDataToDecrypt = Convert.FromBase64String(DataToDecrypt);
+                SoapHexBinary shb = SoapHexBinary.Parse(DecryptKey);
+                byte[] Key = shb.Value;
+                byte[] IV = System.Text.ASCIIEncoding.ASCII.GetBytes("16A7C51F5CA8F123");             
                 using (Aes aesAlg = Aes.Create())
                 {
                     aesAlg.Key = Key;
                     aesAlg.IV = IV;
                     ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
-                    using (MemoryStream msDecrypt = new MemoryStream(DataToDecrypt))
+                    using (MemoryStream msDecrypt = new MemoryStream(ByteDataToDecrypt))
                     {
                         using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                         {
                             using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                             {
-                                 plaintext = srDecrypt.ReadToEnd(); 
+                                decryptedData = srDecrypt.ReadToEnd(); 
                             }
                         }
                     }
                 }
+                tbOriginal.Text = decryptedData;
             }
-            catch (Exception e) { statusBar("Dekripcije neuspjela! Provjerite ispravnost ključa i kriptiranog teksta"); MessageBox.Show(sbLabel.Text); return; }
-            tbOriginal.Text = plaintext;
+            catch (Exception e) { statusBar("Dekripcije neuspjela! Provjerite ispravnost ključa i kriptiranog teksta"); MessageBox.Show(sbLabel.Text); return; }            
             statusBar("Dekriptiranje završeno", 100);
         }
 
         public void cryptRSA()
         {
+            string DataToEncrypt = tbOriginal.Text;
+            string EncryptKey    = tbJavni.Text;
+            if (DataToEncrypt == null || DataToEncrypt.Length <= 0) { statusBar("Tekst za enkripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
+            if (EncryptKey == null || EncryptKey.Length <= 0) { statusBar("Ključ za enkripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
             statusBar("Kriptiram originalni tekst...", 10);
-            UnicodeEncoding ByteConverter = new UnicodeEncoding();
-            byte[] DataToEncrypt = ByteConverter.GetBytes(tbOriginal.Text);
-            string encrypted;
             try
             {
                 byte[] encryptedData;
+                UnicodeEncoding ByteConverter = new UnicodeEncoding();
+                byte[] ByteDataToEncrypt = ByteConverter.GetBytes(DataToEncrypt);
                 using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(2048))
                 {
-                    RSA.FromXmlString(tbJavni.Text);
-                    encryptedData = RSA.Encrypt(DataToEncrypt, false);
+                    RSA.FromXmlString(EncryptKey);
+                    encryptedData = RSA.Encrypt(ByteDataToEncrypt, false);
                 }
-                encrypted = Convert.ToBase64String(encryptedData);
+                tbCrypto.Text = Convert.ToBase64String(encryptedData);
             }
-            catch (Exception e) { statusBar("Enkripcija neuspjela! Provjerite ispravnost ključa i originalni tekst"); MessageBox.Show(sbLabel.Text); return; }
-            tbCrypto.Text = encrypted;
+            catch (Exception e) { statusBar("Enkripcija neuspjela! Provjerite ispravnost ključa i originalni tekst"); MessageBox.Show(sbLabel.Text); return; }             
             spremi("crypto.txt", tbCrypto.Text);
             statusBar("Tekst kriptiran i pospremljen", 100);
         }
 
         public void decryptRSA()
         {
-            UnicodeEncoding ByteConverter = new UnicodeEncoding();
-            byte[] DataToDecrypt;
-            try { DataToDecrypt = Convert.FromBase64String(tbCrypto.Text); }
-            catch (System.FormatException) { statusBar("Tekst za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
+            string DataToDecrypt = tbCrypto.Text;
+            string DecryptKey = tbPrivatni.Text;
+            if (DataToDecrypt == null || DataToDecrypt.Length <= 0) { statusBar("Tekst za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
+            if (DecryptKey == null || DecryptKey.Length <= 0) { statusBar("Ključ za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
             statusBar("Dekriptiram kriptirani tekst...", 10);
             try
             {
                 byte[] decryptedData;
+                byte[] ByteDataToDecrypt = Convert.FromBase64String(DataToDecrypt);
                 using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(2048))
                 {
-                    RSA.FromXmlString(tbPrivatni.Text);
-                    decryptedData = RSA.Decrypt(DataToDecrypt, false);
+                    RSA.FromXmlString(DecryptKey);
+                    decryptedData = RSA.Decrypt(ByteDataToDecrypt, false);
                 }
+                UnicodeEncoding ByteConverter = new UnicodeEncoding();
                 tbOriginal.Text = ByteConverter.GetString(decryptedData);
             }
             catch (Exception e) { statusBar("Dekripcije neuspjela! Provjerite ispravnost ključa i kriptiranog teksta"); MessageBox.Show(sbLabel.Text); return; }
@@ -278,27 +283,32 @@ namespace Cryptography_Csharp
         }
 
         public void HashAndSignBytes()
-        {          
+        {
+            string EncryptKey = tbPrivatni.Text;
+            if (EncryptKey == null || EncryptKey.Length <= 0) { statusBar("Ključ za enkripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }            
             try
             {
                 UnicodeEncoding ByteConverter = new UnicodeEncoding();
                 byte[] DataToSign = ByteConverter.GetBytes(tbOriginal.Text);
                 RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
-                RSAalg.FromXmlString(tbPrivatni.Text);
+                RSAalg.FromXmlString(EncryptKey);
                 tbSazetak.Text = Convert.ToBase64String(RSAalg.SignData(DataToSign, new SHA1CryptoServiceProvider()));
             }
             catch (Exception e) { statusBar("Potpisivanje neuspješno! Provjerite ispravnost ključa i teksta"); MessageBox.Show(sbLabel.Text); return; }
+            tbSazetak.BackColor = Color.White;
         }
 
         public void VerifySignedHash()
         {
+            string DecryptKey = tbJavni.Text;
+            if (DecryptKey == null || DecryptKey.Length <= 0) { statusBar("Ključ za dekripciju neispravan"); MessageBox.Show(sbLabel.Text); return; }
             try
             {
                 UnicodeEncoding ByteConverter = new UnicodeEncoding();
                 byte[] DataToVerify = ByteConverter.GetBytes(tbOriginal.Text);
                 byte[] SignedData = Convert.FromBase64String(tbSazetak.Text);
                 RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
-                RSAalg.FromXmlString(tbJavni.Text);
+                RSAalg.FromXmlString(DecryptKey);
                 bool status = RSAalg.VerifyData(DataToVerify, new SHA1CryptoServiceProvider(), SignedData);
                 if (status)
                 {
