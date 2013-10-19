@@ -77,7 +77,7 @@ namespace Cryptography_Csharp
             else if (clickedButton == btnOriginalUcitaj){ file = "original.txt";        data = tbOriginal; }
             else if (clickedButton == btnCryptoUcitaj)  { file = "crypto.txt";          data = tbCrypto; } 
             data.Text = ucitaj(file);
-            if (data.Lines[0] == "")
+            if (data.Text!="" && data.Lines[0] == "")
             {
                 string[] lines = data.Lines;
                 data.Lines = lines.Skip(1).ToArray();
