@@ -31,10 +31,12 @@
             this.gbOriginal = new System.Windows.Forms.GroupBox();
             this.tbOriginal = new System.Windows.Forms.TextBox();
             this.btnOriginalUcitaj = new System.Windows.Forms.Button();
+            this.btnOriginalClear = new System.Windows.Forms.Button();
             this.btnOriginalSpremi = new System.Windows.Forms.Button();
             this.gbCrypro = new System.Windows.Forms.GroupBox();
             this.tbCrypto = new System.Windows.Forms.TextBox();
             this.btnCryptoUcitaj = new System.Windows.Forms.Button();
+            this.btnCryptoClear = new System.Windows.Forms.Button();
             this.btnCryptoSpremi = new System.Windows.Forms.Button();
             this.tbTajni = new System.Windows.Forms.TextBox();
             this.lblTajni = new System.Windows.Forms.Label();
@@ -50,16 +52,13 @@
             this.btnPrivatniSpremi = new System.Windows.Forms.Button();
             this.tbSazetak = new System.Windows.Forms.TextBox();
             this.lblSazetak = new System.Windows.Forms.Label();
-            this.rbCrypt = new System.Windows.Forms.RadioButton();
-            this.rbDecrypt = new System.Windows.Forms.RadioButton();
             this.btnPokreni = new System.Windows.Forms.Button();
             this.btnSazetakSpremi = new System.Windows.Forms.Button();
             this.btnSazetakUcitaj = new System.Windows.Forms.Button();
-            this.rbSazetakKreiraj = new System.Windows.Forms.RadioButton();
-            this.rbSazetakProvjeri = new System.Windows.Forms.RadioButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.sbLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.sbProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.cbOperacija = new System.Windows.Forms.ComboBox();
             this.gbOriginal.SuspendLayout();
             this.gbCrypro.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -69,6 +68,7 @@
             // 
             this.gbOriginal.Controls.Add(this.tbOriginal);
             this.gbOriginal.Controls.Add(this.btnOriginalUcitaj);
+            this.gbOriginal.Controls.Add(this.btnOriginalClear);
             this.gbOriginal.Controls.Add(this.btnOriginalSpremi);
             this.gbOriginal.Location = new System.Drawing.Point(12, 12);
             this.gbOriginal.Name = "gbOriginal";
@@ -82,6 +82,7 @@
             this.tbOriginal.Location = new System.Drawing.Point(6, 16);
             this.tbOriginal.Multiline = true;
             this.tbOriginal.Name = "tbOriginal";
+            this.tbOriginal.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbOriginal.Size = new System.Drawing.Size(468, 540);
             this.tbOriginal.TabIndex = 2;
             // 
@@ -95,9 +96,19 @@
             this.btnOriginalUcitaj.UseVisualStyleBackColor = true;
             this.btnOriginalUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
             // 
+            // btnOriginalClear
+            // 
+            this.btnOriginalClear.Location = new System.Drawing.Point(399, 562);
+            this.btnOriginalClear.Name = "btnOriginalClear";
+            this.btnOriginalClear.Size = new System.Drawing.Size(75, 23);
+            this.btnOriginalClear.TabIndex = 1;
+            this.btnOriginalClear.Text = "Isprazni";
+            this.btnOriginalClear.UseVisualStyleBackColor = true;
+            this.btnOriginalClear.Click += new System.EventHandler(this.clear_Click);
+            // 
             // btnOriginalSpremi
             // 
-            this.btnOriginalSpremi.Location = new System.Drawing.Point(399, 562);
+            this.btnOriginalSpremi.Location = new System.Drawing.Point(162, 562);
             this.btnOriginalSpremi.Name = "btnOriginalSpremi";
             this.btnOriginalSpremi.Size = new System.Drawing.Size(75, 23);
             this.btnOriginalSpremi.TabIndex = 1;
@@ -109,6 +120,7 @@
             // 
             this.gbCrypro.Controls.Add(this.tbCrypto);
             this.gbCrypro.Controls.Add(this.btnCryptoUcitaj);
+            this.gbCrypro.Controls.Add(this.btnCryptoClear);
             this.gbCrypro.Controls.Add(this.btnCryptoSpremi);
             this.gbCrypro.Location = new System.Drawing.Point(516, 12);
             this.gbCrypro.Name = "gbCrypro";
@@ -122,6 +134,7 @@
             this.tbCrypto.Location = new System.Drawing.Point(6, 16);
             this.tbCrypto.Multiline = true;
             this.tbCrypto.Name = "tbCrypto";
+            this.tbCrypto.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbCrypto.Size = new System.Drawing.Size(468, 540);
             this.tbCrypto.TabIndex = 2;
             // 
@@ -135,9 +148,19 @@
             this.btnCryptoUcitaj.UseVisualStyleBackColor = true;
             this.btnCryptoUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
             // 
+            // btnCryptoClear
+            // 
+            this.btnCryptoClear.Location = new System.Drawing.Point(399, 562);
+            this.btnCryptoClear.Name = "btnCryptoClear";
+            this.btnCryptoClear.Size = new System.Drawing.Size(75, 23);
+            this.btnCryptoClear.TabIndex = 1;
+            this.btnCryptoClear.Text = "Isprazni";
+            this.btnCryptoClear.UseVisualStyleBackColor = true;
+            this.btnCryptoClear.Click += new System.EventHandler(this.clear_Click);
+            // 
             // btnCryptoSpremi
             // 
-            this.btnCryptoSpremi.Location = new System.Drawing.Point(399, 562);
+            this.btnCryptoSpremi.Location = new System.Drawing.Point(162, 562);
             this.btnCryptoSpremi.Name = "btnCryptoSpremi";
             this.btnCryptoSpremi.Size = new System.Drawing.Size(75, 23);
             this.btnCryptoSpremi.TabIndex = 1;
@@ -272,31 +295,11 @@
             this.lblSazetak.TabIndex = 3;
             this.lblSazetak.Text = "Sažetak";
             // 
-            // rbCrypt
-            // 
-            this.rbCrypt.AutoSize = true;
-            this.rbCrypt.Location = new System.Drawing.Point(813, 619);
-            this.rbCrypt.Name = "rbCrypt";
-            this.rbCrypt.Size = new System.Drawing.Size(71, 17);
-            this.rbCrypt.TabIndex = 5;
-            this.rbCrypt.Text = "Kriptiranje";
-            this.rbCrypt.UseVisualStyleBackColor = true;
-            // 
-            // rbDecrypt
-            // 
-            this.rbDecrypt.AutoSize = true;
-            this.rbDecrypt.Location = new System.Drawing.Point(813, 642);
-            this.rbDecrypt.Name = "rbDecrypt";
-            this.rbDecrypt.Size = new System.Drawing.Size(84, 17);
-            this.rbDecrypt.TabIndex = 5;
-            this.rbDecrypt.Text = "Dekriptiranje";
-            this.rbDecrypt.UseVisualStyleBackColor = true;
-            // 
             // btnPokreni
             // 
-            this.btnPokreni.Location = new System.Drawing.Point(917, 610);
+            this.btnPokreni.Location = new System.Drawing.Point(807, 640);
             this.btnPokreni.Name = "btnPokreni";
-            this.btnPokreni.Size = new System.Drawing.Size(76, 104);
+            this.btnPokreni.Size = new System.Drawing.Size(186, 74);
             this.btnPokreni.TabIndex = 4;
             this.btnPokreni.Text = "POKRENI";
             this.btnPokreni.UseVisualStyleBackColor = true;
@@ -322,26 +325,6 @@
             this.btnSazetakUcitaj.UseVisualStyleBackColor = true;
             this.btnSazetakUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
             // 
-            // rbSazetakKreiraj
-            // 
-            this.rbSazetakKreiraj.AutoSize = true;
-            this.rbSazetakKreiraj.Location = new System.Drawing.Point(813, 665);
-            this.rbSazetakKreiraj.Name = "rbSazetakKreiraj";
-            this.rbSazetakKreiraj.Size = new System.Drawing.Size(94, 17);
-            this.rbSazetakKreiraj.TabIndex = 5;
-            this.rbSazetakKreiraj.Text = "Kreiraj sažetak";
-            this.rbSazetakKreiraj.UseVisualStyleBackColor = true;
-            // 
-            // rbSazetakProvjeri
-            // 
-            this.rbSazetakProvjeri.AutoSize = true;
-            this.rbSazetakProvjeri.Location = new System.Drawing.Point(813, 688);
-            this.rbSazetakProvjeri.Name = "rbSazetakProvjeri";
-            this.rbSazetakProvjeri.Size = new System.Drawing.Size(100, 17);
-            this.rbSazetakProvjeri.TabIndex = 5;
-            this.rbSazetakProvjeri.Text = "Provjeri sažetak";
-            this.rbSazetakProvjeri.UseVisualStyleBackColor = true;
-            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -364,17 +347,32 @@
             this.sbProgress.Name = "sbProgress";
             this.sbProgress.Size = new System.Drawing.Size(100, 16);
             // 
+            // cbOperacija
+            // 
+            this.cbOperacija.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOperacija.FormattingEnabled = true;
+            this.cbOperacija.Items.AddRange(new object[] {
+            "Kriptiranje AES",
+            "Dekirptiranje AES",
+            "Kriptiranje RSA",
+            "Dekriptiranje RSA",
+            "Generiraj sažetak",
+            "Provjeri sažetak",
+            "Kreiraj digiralni potpis",
+            "Provjeri digitalni potpis"});
+            this.cbOperacija.Location = new System.Drawing.Point(807, 610);
+            this.cbOperacija.Name = "cbOperacija";
+            this.cbOperacija.Size = new System.Drawing.Size(183, 21);
+            this.cbOperacija.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 743);
+            this.Controls.Add(this.cbOperacija);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.rbSazetakProvjeri);
-            this.Controls.Add(this.rbSazetakKreiraj);
             this.Controls.Add(this.btnPokreni);
-            this.Controls.Add(this.rbDecrypt);
-            this.Controls.Add(this.rbCrypt);
             this.Controls.Add(this.btnSazetakSpremi);
             this.Controls.Add(this.btnPrivatniSpremi);
             this.Controls.Add(this.btnSazetakUcitaj);
@@ -426,22 +424,21 @@
         private System.Windows.Forms.Button btnPrivatniSpremi;
         private System.Windows.Forms.TextBox tbSazetak;
         private System.Windows.Forms.Label lblSazetak;
-        private System.Windows.Forms.RadioButton rbCrypt;
-        private System.Windows.Forms.RadioButton rbDecrypt;
         private System.Windows.Forms.Button btnPokreni;
         private System.Windows.Forms.Button btnOriginalSpremi;
         private System.Windows.Forms.Button btnOriginalUcitaj;
         private System.Windows.Forms.Button btnCryptoSpremi;
         private System.Windows.Forms.Button btnSazetakSpremi;
         private System.Windows.Forms.Button btnSazetakUcitaj;
-        private System.Windows.Forms.RadioButton rbSazetakKreiraj;
-        private System.Windows.Forms.RadioButton rbSazetakProvjeri;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel sbLabel;
         private System.Windows.Forms.ToolStripProgressBar sbProgress;
         private System.Windows.Forms.TextBox tbOriginal;
         private System.Windows.Forms.TextBox tbCrypto;
         private System.Windows.Forms.Button btnCryptoUcitaj;
+        private System.Windows.Forms.Button btnOriginalClear;
+        private System.Windows.Forms.Button btnCryptoClear;
+        private System.Windows.Forms.ComboBox cbOperacija;
     }
 }
 
