@@ -32,8 +32,8 @@ namespace Cryptography_Csharp
                 case 3: decryptRSA(); break;
                 case 4: sha1(); break;
                 case 5: check_sha1(); break;
-                case 6: break;
-                case 7: break;
+                case 6: HashAndSignBytes();  break;
+                case 7: VerifySignedHash(); break;
             }
         }
 
@@ -44,7 +44,8 @@ namespace Cryptography_Csharp
             if (tb == tbTajni)
             {
                 using (AesCryptoServiceProvider AES = new AesCryptoServiceProvider())
-                {                    
+                {
+                    AES.KeySize = 128;
                     SoapHexBinary shb = new SoapHexBinary(AES.Key);
                     tbTajni.Text = shb.ToString();
                     spremi("tajni_kljuc.txt", tbTajni.Text);
@@ -52,7 +53,7 @@ namespace Cryptography_Csharp
             }
             else if (tb == tbJavni || tb==tbPrivatni)
             {
-                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(2048))
                 {                    
                     tbJavni.Text = RSA.ToXmlString(false);
                     tbPrivatni.Text = RSA.ToXmlString(true);
@@ -213,18 +214,20 @@ namespace Cryptography_Csharp
         {
             statusBar("Kriptiram originalni tekst...", 10);
             UnicodeEncoding ByteConverter = new UnicodeEncoding();
-            byte[] DataToEncrypt = ByteConverter.GetBytes(tbOriginal.Text);         
+            byte[] DataToEncrypt = ByteConverter.GetBytes(tbOriginal.Text);
+            string encrypted;
             try
             {
                 byte[] encryptedData;
-                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(2048))
                 {
                     RSA.FromXmlString(tbJavni.Text);
                     encryptedData = RSA.Encrypt(DataToEncrypt, false);
                 }
-                tbCrypto.Text = Convert.ToBase64String(encryptedData);
+                encrypted = Convert.ToBase64String(encryptedData);
             }
             catch (Exception e) { statusBar("Enkripcija neuspjela! Provjerite ispravnost ključa i originalni tekst"); MessageBox.Show(sbLabel.Text); return; }
+            tbCrypto.Text = encrypted;
             spremi("crypto.txt", tbCrypto.Text);
             statusBar("Tekst kriptiran i pospremljen", 100);
         }
@@ -239,7 +242,7 @@ namespace Cryptography_Csharp
             try
             {
                 byte[] decryptedData;
-                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(2048))
                 {
                     RSA.FromXmlString(tbPrivatni.Text);
                     decryptedData = RSA.Decrypt(DataToDecrypt, false);
@@ -272,6 +275,44 @@ namespace Cryptography_Csharp
                 tbSazetak.BackColor = Color.Red;
                 statusBar("Sažetak NIJE ISPRAVAN");
             }            
+        }
+
+        public void HashAndSignBytes()
+        {          
+            try
+            {
+                UnicodeEncoding ByteConverter = new UnicodeEncoding();
+                byte[] DataToSign = ByteConverter.GetBytes(tbOriginal.Text);
+                RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
+                RSAalg.FromXmlString(tbPrivatni.Text);
+                tbSazetak.Text = Convert.ToBase64String(RSAalg.SignData(DataToSign, new SHA1CryptoServiceProvider()));
+            }
+            catch (Exception e) { statusBar("Potpisivanje neuspješno! Provjerite ispravnost ključa i teksta"); MessageBox.Show(sbLabel.Text); return; }
+        }
+
+        public void VerifySignedHash()
+        {
+            try
+            {
+                UnicodeEncoding ByteConverter = new UnicodeEncoding();
+                byte[] DataToVerify = ByteConverter.GetBytes(tbOriginal.Text);
+                byte[] SignedData = Convert.FromBase64String(tbSazetak.Text);
+                RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
+                RSAalg.FromXmlString(tbJavni.Text);
+                bool status = RSAalg.VerifyData(DataToVerify, new SHA1CryptoServiceProvider(), SignedData);
+                if (status)
+                {
+                    tbSazetak.BackColor = Color.GreenYellow;
+                    statusBar("Sažetak uspješno verificiran");
+                }
+                else
+                {
+                    tbSazetak.BackColor = Color.Red;
+                    statusBar("Sažetak NIJE ISPRAVAN");
+                } 
+            }
+            catch (Exception e) { tbSazetak.BackColor = Color.Red; statusBar("Potpisivanje neuspješno! Provjerite ispravnost ključa i teksta"); MessageBox.Show(sbLabel.Text); return; }
+
         }
 
         public static string GetSHA1CSPHash(string plaintext)
